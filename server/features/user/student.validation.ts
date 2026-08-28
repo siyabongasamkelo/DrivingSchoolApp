@@ -2,11 +2,6 @@ import { z } from "zod";
 import { OnboardingStage, AccountStatus } from "./student.model";
 import { Types } from "mongoose";
 
-// // Helper to validate MongoDB ObjectIds string format
-// const objectIdSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, {
-//   message: "Invalid database identifier format",
-// });
-
 const objectIdSchema = z
   .string()
   .regex(/^[0-9a-fA-F]{24}$/, { message: "Invalid database identifier format" })
@@ -44,15 +39,6 @@ export const personalProfileValidationSchema = z.object({
   disability: z.string().trim().optional(),
   image: z.string().url("Invalid profile image URL").optional(),
 });
-
-// export const coursePreferenceValidationSchema = z.object({
-//   drivingCourse: z.string().trim().optional(),
-//   drivingCode: z.string().trim().optional(), // e.g., "Code 8", "Code 10"
-//   preferredInstructors: z.array(objectIdSchema).default([]),
-//   preferredCars: z.array(objectIdSchema).default([]),
-//   preferredTime: z.string().trim().optional(),
-//   availability: z.string().trim().optional(),
-// });
 
 export const coursePreferenceValidationSchema = z.object({
   drivingCourse: z.string().trim().optional(),
