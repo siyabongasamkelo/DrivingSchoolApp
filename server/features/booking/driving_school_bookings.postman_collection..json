@@ -1,0 +1,184 @@
+{
+  "info": {
+    "_postman_id": "fd-architecture-booking-suite",
+    "name": "Driving School MS - Booking Feature",
+    "description": "Endpoint testing suite for Feature-Driven MERN driving school booking system cluster (Bot & Admin endpoints).",
+    "schema": "https://getpostman.com"
+  },
+  "item": [
+    {
+      "name": "🤖 WhatsApp Bot",
+      "item": [
+        {
+          "name": "1. Discover Available Slots",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"drivingSchool\": \"DriveEasy Academy\",\n  \"branch\": \"Durban Central\",\n  \"targetDate\": \"2026-03-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/bookings/bot/slots",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "bookings", "bot", "slots"]
+            },
+            "description": "Fetches vacant, pre-generated slots and returns a text-based WhatsApp menu. Validates date strictly against YYYY-MM-DD format."
+          },
+          "response": []
+        },
+        {
+          "name": "2. Process Bot Slot Reservation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"drivingSchool\": \"DriveEasy Academy\",\n  \"branch\": \"Durban Central\",\n  \"studentId\": \"{{studentId}}\",\n  \"targetSlotId\": \"{{slotId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/bookings/bot/reserve",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "bookings", "bot", "reserve"]
+            },
+            "description": "Processes inline slot reservations chosen by the student via the bot using an atomic lock mechanism."
+          },
+          "response": []
+        },
+        {
+          "name": "3. Get Student Itinerary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/bookings/bot/itinerary/{{studentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": [
+                "api",
+                "v1",
+                "bookings",
+                "bot",
+                "itinerary",
+                "{{studentId}}"
+              ]
+            },
+            "description": "Resolves forgotten lessons by returning a chronological WhatsApp text schedule layout."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🖥️ Admin Web Dashboard",
+      "item": [
+        {
+          "name": "1. Create Manual Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"drivingSchool\": \"DriveEasy Academy\",\n  \"branch\": \"Durban Central\",\n  \"student\": \"{{studentId}}\",\n  \"slot\": \"{{slotId}}\",\n  \"notes\": \"Student needs extra focus on parallel parking and clutch control.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/bookings/admin",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "bookings", "admin"]
+            },
+            "description": "Manually execute a lesson reservation from the office backend panel using minimal validation payload."
+          },
+          "response": []
+        },
+        {
+          "name": "2. Search Bookings by Branch",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/bookings/admin/search?school=DriveEasy Academy&branch=Durban Central&date=2026-03-15&instructorId={{instructorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "bookings", "admin", "search"],
+              "query": [
+                {
+                  "key": "school",
+                  "value": "DriveEasy Academy"
+                },
+                {
+                  "key": "branch",
+                  "value": "Durban Central"
+                },
+                {
+                  "key": "date",
+                  "value": "2026-03-15",
+                  "description": "Optional lookup filter"
+                },
+                {
+                  "key": "instructorId",
+                  "value": "{{instructorId}}",
+                  "description": "Optional lookup filter"
+                }
+              ]
+            },
+            "description": "Extracts operational branch booking lists filtered by brand, branch, and optional date/instructor filters."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "studentId",
+      "value": "65df1a2b3c4d5e6f7a8b9c01",
+      "type": "string"
+    },
+    {
+      "key": "slotId",
+      "value": "65df1a2b3c4d5e6f7a8b9c02",
+      "type": "string"
+    },
+    {
+      "key": "instructorId",
+      "value": "65df1a2b3c4d5e6f7a8b9c03",
+      "type": "string"
+    }
+  ]
+}
